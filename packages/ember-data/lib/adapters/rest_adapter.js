@@ -584,6 +584,20 @@ export default Adapter.extend({
     return url.join('/');
   },
 
+
+  /**
+    Builds a URL for hasMany associations given relationshipName, recordName and record.
+
+    Optionally used to generate a URL if payload does not include links or ids.
+
+    @method buildURLForHasMany
+    @param {String} relationshipName
+    @param {String} recordName
+    @param {DS.Model} record
+    @return {String} url
+  */
+  buildURLForHasMany: null,
+
   _stripIDFromURL: function(store, record) {
     var type = record.constructor;
     var url = this.buildURL(type.typeKey, record.get('id'), record);

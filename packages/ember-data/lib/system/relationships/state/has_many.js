@@ -16,6 +16,20 @@ ManyRelationship.prototype = Ember.create(Relationship.prototype);
 ManyRelationship.prototype.constructor = ManyRelationship;
 ManyRelationship.prototype._super$constructor = Relationship;
 
+ManyRelationship.prototype.updateFromAdapter = function(data) {
+  var key   = this.key;
+  var value = data[key];
+  var link  = data.links && data.links[key] || this.generateLink();
+
+  if (link) {
+    this.updateLink(link);
+  }
+
+  if (value) {
+    this.updateRecordsFromAdapter(value);
+  }
+};
+
 ManyRelationship.prototype.destroy = function() {
   this.manyArray.destroy();
 };
@@ -186,6 +200,20 @@ ManyRelationship.prototype.getRecords = function() {
     }
     return this.manyArray;
  }
+};
+
+ManyRelationship.prototype.generateLink = function() {
+
+  if (!this.isAsync) {
+    return;
+  }
+
+  var adapter = this.store.adapterFor(this.type);
+  var buildUrl = adapter.buildURLForHasMany;
+
+  if (typeof buildUrl === "function") {
+    return buildUrl.call(adapter, this.key, this.inverseKey, this.record);
+  }
 };
 
 function setForArray(array) {

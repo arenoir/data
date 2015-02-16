@@ -16,6 +16,21 @@ BelongsToRelationship.prototype = Ember.create(Relationship.prototype);
 BelongsToRelationship.prototype.constructor = BelongsToRelationship;
 BelongsToRelationship.prototype._super$constructor = Relationship;
 
+BelongsToRelationship.prototype.updateFromAdapter = function(data) {
+  var key   = this.key;
+  var value = data[this.key];
+
+  if (data.links && data.links[key]) {
+    this.updateLink(data.links[key]);
+  }
+
+  if (value === undefined) {
+    return;
+  }
+
+  this.setCanonicalRecord(value);
+};
+
 BelongsToRelationship.prototype.setRecord = function(newRecord) {
   if (newRecord) {
     this.addRecord(newRecord);

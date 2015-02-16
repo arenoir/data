@@ -2009,22 +2009,9 @@ function setupRelationships(store, record, data) {
   var type = record.constructor;
 
   type.eachRelationship(function(key, descriptor) {
-    var kind = descriptor.kind;
-    var value = data[key];
     var relationship = record._relationships[key];
 
-    if (data.links && data.links[key]) {
-      relationship.updateLink(data.links[key]);
-    }
-
-    if (kind === 'belongsTo') {
-      if (value === undefined) {
-        return;
-      }
-      relationship.setCanonicalRecord(value);
-    } else if (kind === 'hasMany' && value) {
-     relationship.updateRecordsFromAdapter(value);
-    }
+    relationship.updateFromAdapter(data);
   });
 }
 

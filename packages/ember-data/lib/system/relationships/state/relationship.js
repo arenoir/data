@@ -9,6 +9,7 @@ var Relationship = function(store, record, inverseKey, relationshipMeta) {
   this.canonicalMembers = new OrderedSet();
   this.store = store;
   this.key = relationshipMeta.key;
+  this.type = relationshipMeta.type;
   this.inverseKey = inverseKey;
   this.record = record;
   this.isAsync = relationshipMeta.options.async;
@@ -21,7 +22,7 @@ var Relationship = function(store, record, inverseKey, relationshipMeta) {
 
 Relationship.prototype = {
   constructor: Relationship,
-
+  updateFromAdapter: Ember.K,
   destroy: Ember.K,
 
   clear: function() {
